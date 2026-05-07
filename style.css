@@ -20,6 +20,14 @@ body {
   font-display: swap;
 }
 
+@font-face {
+  font-family: "NixgonFont";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/NIXGONM-Vb.woff")
+    format("woff");
+  font-weight: 500;
+  font-display: swap;
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;
