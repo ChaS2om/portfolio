@@ -99,3 +99,19 @@ body {
 .hover-underline:hover::after {
   opacity: 1;
 }
+
+.media-thumb {
+  opacity: 0.5;
+  transition: opacity 0.3s ease;
+  border: 2px solid transparent;
+  box-sizing: border-box;
+}
+
+.media-thumb:hover {
+  opacity: 0.8;
+}
+
+.active-thumb {
+  opacity: 1 !important;
+  border: 2px solid white !important;
+}

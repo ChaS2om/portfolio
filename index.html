@@ -44,16 +44,19 @@
     "
     src="https://i.ibb.co/B5yTDsq5/BG1.png"
   />
-  <img
-    style="
-      width: 1920px;
-      height: 1080px;
-      left: 0px;
-      top: 180px;
-      position: absolute;
+  <video
+  id="hero-video"
+  style="
+    width: 1920px; 
+    height: 1080px; 
+    left: 0px; 
+    top: 180px; 
+    position: absolute; 
+    object-fit: cover;
     "
-    src="https://placehold.co/1920x1080"
-  />
+  src="https://www.image2url.com/r2/default/videos/1778472644047-390fa478-62f2-4cb9-81cb-90ab50d94aef.mp4"
+  preload="metadata"
+></video>
   <div
     style="
       width: 1920px;
@@ -240,28 +243,19 @@
     </div>
     <div style="width: 860px; height: 440px; background: #d9d9d9"></div>
   </div>
-  <div
-    style="
-      width: 180px;
-      height: 180px;
-      left: 870px;
-      top: 626px;
-      position: absolute;
-      opacity: 0.7;
-      background: white;
-      border-radius: 9999px;
-    "
-  ></div>
-  <div
-    style="
-      width: 60px;
-      height: 60px;
-      left: 930px;
-      top: 686px;
-      position: absolute;
-      background: black;
-    "
-  ></div>
+<!-- 흰 원 (기존 opacity:0.7 흰 원) -->
+<div
+  id="play-btn"
+  onclick="toggleHeroVideo()"
+  style="width: 180px; height: 180px; left: 870px; top: 626px; position: absolute; opacity: 0.7; background: white; border-radius: 9999px; cursor: pointer; z-index: 10;"
+></div>
+
+<!-- 검정 삼각형 (기존 검정 사각형 → 삼각형으로 변경) -->
+<div
+  id="play-icon"
+  onclick="toggleHeroVideo()"
+  style="width: 0; height: 0; left: 945px; top: 683px; position: absolute; border-top: 35px solid transparent; border-bottom: 35px solid transparent; border-left: 60px solid black; cursor: pointer; z-index: 11; pointer-events: none;"
+></div>
 
   <!-- 라이트박스 오버레이 -->
   <div
@@ -287,48 +281,56 @@
   <img
     onclick="openLightbox(this.src, this)"
     style="
-      width: 780px;
-      height: 640px;
+      width: 685px;
+      height: 562px;
       left: 1080px;
-      top: 2732px;
+      top: 2812px;
       position: absolute;
       cursor: zoom-in;
+      border: 3px solid rgba(255,255,255,0.7);
+      box-sizing: border-box;
     "
-    src="https://i.ibb.co/4w7BZs0P/MAP.jpg"
+    src="https://i.ibb.co/DHFdwmy7/MAP.png"
   />
   <img
     onclick="openLightbox(this.src, this)"
     style="
-      width: 980px;
-      height: 640px;
-      left: 60px;
-      top: 2732px;
+      width: 860px;
+      height: 562px;
+      left: 180px;
+      top: 2812px;
       position: absolute;
       cursor: zoom-in;
+      border: 3px solid rgba(255,255,255,0.7);
+      box-sizing: border-box;
     "
-    src="https://i.ibb.co/XkZzn4nb/TITLE.png"
+    src="https://i.ibb.co/cK3psDms/TITLE.png"
   />
   <img
     onclick="openLightbox(this.src, this)"
     style="
-      width: 830px;
-      height: 640px;
-      left: 60px;
+      width: 729px;
+      height: 562px;
+      left: 180px;
       top: 3412px;
       position: absolute;
       cursor: zoom-in;
+      border: 3px solid rgba(255,255,255,0.7);
+      box-sizing: border-box;
     "
     src="https://i.ibb.co/xKBpvqZd/WORLD.jpg"
   />
   <img
     onclick="openLightbox(this.src, this)"
     style="
-      width: 930px;
-      height: 640px;
-      left: 930px;
+      width: 817px;
+      height: 562px;
+      left: 945px;
       top: 3412px;
       position: absolute;
       cursor: zoom-in;
+      border: 3px solid rgba(255,255,255,0.7);
+      box-sizing: border-box;
     "
     src="https://i.ibb.co/j96CbfJV/PLAY.jpg"
   />
@@ -336,7 +338,7 @@
     style="
       width: 400px;
       height: 80px;
-      left: 660px;
+      left: 670px;
       top: 3292px;
       position: absolute;
       text-align: center;
@@ -378,8 +380,8 @@
     style="
       width: 300px;
       height: 80px;
-      left: 930px;
-      top: 3412px;
+      left: 945px;
+      top: 3417px;
       position: absolute;
       text-align: center;
       justify-content: center;
@@ -399,8 +401,8 @@
     style="
       width: 250px;
       height: 80px;
-      left: 640px;
-      top: 3412px;
+      left: 660px;
+      top: 3417px;
       position: absolute;
       text-align: center;
       justify-content: center;
@@ -416,6 +418,7 @@
   >
     오픈월드
   </div>
+  
   <img
     style="
       width: 1976px;
@@ -437,22 +440,31 @@
       background: black;
     "
   ></div>
-  <div
+ <div style="
+  width: 1360px;
+  height: 600px;
+  left: 280px;
+  top: 4310px;
+  position: absolute;
+  overflow: hidden;
+">
+  <img
+    id="media-main-img"
+    src="https://placehold.co/1360x600"
     style="
-      width: 1760px;
-      height: 630px;
-      left: 80px;
-      top: 4260px;
-      position: absolute;
-      background: #d9d9d9;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: opacity 0.5s ease;
     "
-  ></div>
+  />
+</div>
   <div
     style="
       width: 300px;
       height: 80px;
       left: 825px;
-      top: 4150px;
+      top: 4200px;
       position: absolute;
       text-align: center;
       justify-content: center;
@@ -468,46 +480,38 @@
   >
     미디어
   </div>
-  <div
-    style="
-      width: 417.5px;
-      height: 250px;
-      left: 80px;
-      top: 4920px;
-      position: absolute;
-      background: #d9d9d9;
-    "
-  ></div>
-  <div
-    style="
-      width: 417.5px;
-      height: 250px;
-      left: 527.5px;
-      top: 4920px;
-      position: absolute;
-      background: #d9d9d9;
-    "
-  ></div>
-  <div
-    style="
-      width: 417.5px;
-      height: 250px;
-      left: 975px;
-      top: 4920px;
-      position: absolute;
-      background: #d9d9d9;
-    "
-  ></div>
-  <div
-    style="
-      width: 417.5px;
-      height: 250px;
-      left: 1422.5px;
-      top: 4920px;
-      position: absolute;
-      background: #d9d9d9;
-    "
-  ></div>
+
+ <div class="media-thumb active-thumb" data-index="0" onclick="selectMedia(0)"
+  style="width: 325px; height: 220px; left: 280px; top: 4930px; position: absolute; overflow: hidden; cursor: pointer;">
+  <img src="https://placehold.co/325x220" style="width: 100%; height: 100%; object-fit: cover;" />
+</div>
+<div style="left: 280px; top: 5155px; position: absolute; width: 325px; height: 5px; background: rgba(255,255,255,0.2); border-radius: 3px;">
+  <div class="media-progress" data-index="0" style="height: 100%; width: 0%; background: white; border-radius: 3px;"></div>
+</div>
+
+<div class="media-thumb" data-index="1" onclick="selectMedia(1)"
+  style="width: 325px; height: 220px; left: 625px; top: 4930px; position: absolute; overflow: hidden; cursor: pointer;">
+  <img src="https://placehold.co/325x220" style="width: 100%; height: 100%; object-fit: cover;" />
+</div>
+<div style="left: 625px; top: 5155px; position: absolute; width: 325px; height: 5px; background: rgba(255,255,255,0.2); border-radius: 3px;">
+  <div class="media-progress" data-index="1" style="height: 100%; width: 0%; background: white; border-radius: 3px;"></div>
+</div>
+
+<div class="media-thumb" data-index="2" onclick="selectMedia(2)"
+  style="width: 325px; height: 220px; left: 970px; top: 4930px; position: absolute; overflow: hidden; cursor: pointer;">
+  <img src="https://placehold.co/325x220" style="width: 100%; height: 100%; object-fit: cover;" />
+</div>
+<div style="left: 970px; top: 5155px; position: absolute; width: 325px; height: 5px; background: rgba(255,255,255,0.2); border-radius: 3px;">
+  <div class="media-progress" data-index="2" style="height: 100%; width: 0%; background: white; border-radius: 3px;"></div>
+</div>
+
+<div class="media-thumb" data-index="3" onclick="selectMedia(3)"
+  style="width: 325px; height: 220px; left: 1315px; top: 4930px; position: absolute; overflow: hidden; cursor: pointer;">
+  <img src="https://placehold.co/325x220" style="width: 100%; height: 100%; object-fit: cover;" />
+</div>
+<div style="left: 1315px; top: 5155px; position: absolute; width: 325px; height: 5px; background: rgba(255,255,255,0.2); border-radius: 3px;">
+  <div class="media-progress" data-index="3" style="height: 100%; width: 0%; background: white; border-radius: 3px;"></div>
+</div>
   <div
     style="
       width: 30px;
@@ -520,16 +524,7 @@
       background: black;
     "
   ></div>
-  <div
-    style="
-      width: 276px;
-      height: 10px;
-      left: 80px;
-      top: 5160px;
-      position: absolute;
-      background: #878787;
-    "
-  ></div>
+
   <div
     style="
       width: 1920px;
