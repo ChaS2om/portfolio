@@ -162,9 +162,9 @@
   </div>
   <div
     style="
-      width: 1376px;
+      width: 1920px;
       height: 110px;
-      left: 272px;
+      left: 0px;
       top: 1501px;
       position: absolute;
       text-align: center;
@@ -178,8 +178,7 @@
       word-wrap: break-word;
     "
   >
-    Lorem ipsum dolor sit amet consectetur. Ipsum viverra scelerisque ultrices
-    purus ultrices nunc dapibus ipsum.
+    일상과 판타지가 공존하는 현대 도시
   </div>
   <div
     style="
@@ -192,7 +191,10 @@
       display: inline-flex;
     "
   >
-    <div style="width: 860px; height: 440px; background: #d9d9d9"></div>
+    <img 
+      style="width: 860px; height: 440px;"
+      src="https://i.ibb.co/cc0s8PVk/CITY1.png"
+    />
     <div
       style="
         width: 790px;
@@ -202,14 +204,15 @@
         display: flex;
         flex-direction: column;
         color: white;
-        font-size: 50px;
+        font-size: 40px;
         font-family: NixgonFont;
         font-weight: 400;
         word-wrap: break-word;
       "
     >
-      Lorem ipsum dolor sit amet consectetur. Ipsum viverra scelerisque ultrices
-      purus ultrices nunc dapibus ipsum.
+      살아 움직이는 현대 도시를 자유롭게 탐험하세요<br>
+      복잡한 골목과 번화한 거리, 낮과 밤이 번화하는<br>
+      도시 속에서 당신만의 이야기가 시작됩니다
     </div>
   </div>
   <div
@@ -232,30 +235,112 @@
         display: flex;
         flex-direction: column;
         color: white;
-        font-size: 50px;
+        font-size: 40px;
         font-family: NixgonFont;
         font-weight: 400;
         word-wrap: break-word;
       "
     >
-      Lorem ipsum dolor sit amet consectetur. Ipsum viverra scelerisque ultrices
-      purus ultrices nunc dapibus ipsum.
+      현실과 판타지가 뒤섞인 세계<br>
+      도시 곳곳에 나타나는 이형의 존재와 숨겨진 비밀<br> 
+      속에서 특별한 능력과 운명을 마주하게 됩니다
     </div>
-    <div style="width: 860px; height: 440px; background: #d9d9d9"></div>
+    <img 
+      style="width: 860px; height: 440px;"
+      src="https://i.ibb.co/tjzHL6w/CITY2.png"
+    />
   </div>
-<!-- 흰 원 (기존 opacity:0.7 흰 원) -->
+
+  <!-- 재생 버튼 (클릭 가능하게) -->
 <div
-  id="play-btn"
-  onclick="toggleHeroVideo()"
-  style="width: 180px; height: 180px; left: 870px; top: 626px; position: absolute; opacity: 0.7; background: white; border-radius: 9999px; cursor: pointer; z-index: 10;"
+  onclick="openVideoPopup()"
+  style="
+    width: 180px;
+    height: 180px;
+    left: 870px;
+    top: 626px;
+    position: absolute;
+    opacity: 0.7;
+    background: white;
+    border-radius: 9999px;
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+  "
+  onmouseover="this.style.opacity='1'"
+  onmouseout="this.style.opacity='0.7'"
+></div>
+<div
+  onclick="openVideoPopup()"
+  style="
+    width: 0;
+    height: 0;
+    left: 942px;
+    top: 686px;
+    position: absolute;
+    border-top: 30px solid transparent;
+    border-bottom: 30px solid transparent;
+    border-left: 50px solid black;
+    cursor: pointer;
+    pointer-events: none;
+  "
 ></div>
 
-<!-- 검정 삼각형 (기존 검정 사각형 → 삼각형으로 변경) -->
+<!-- 비디오 팝업 -->
 <div
-  id="play-icon"
-  onclick="toggleHeroVideo()"
-  style="width: 0; height: 0; left: 945px; top: 683px; position: absolute; border-top: 35px solid transparent; border-bottom: 35px solid transparent; border-left: 60px solid black; cursor: pointer; z-index: 11; pointer-events: none;"
-></div>
+  id="video-popup"
+  onclick="closeVideoPopup(event)"
+  style="
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.9);
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+    cursor: zoom-out;
+  "
+>
+  <div
+    onclick="event.stopPropagation()"
+    style="
+      position: relative;
+      width: 1280px;
+      height: 720px;
+      cursor: default;
+    "
+  >
+    <!-- 닫기 버튼 -->
+    <div
+      onclick="closeVideoPopup(event)"
+      style="
+        position: absolute;
+        top: -50px;
+        right: 0px;
+        color: white;
+        font-size: 40px;
+        cursor: pointer;
+        line-height: 1;
+        opacity: 0.8;
+        transition: opacity 0.2s;
+      "
+      onmouseover="this.style.opacity='1'"
+      onmouseout="this.style.opacity='0.8'"
+    >✕</div>
+
+    <!-- 유튜브 영상: src의 VIDEO_ID를 실제 유튜브 ID로 교체 -->
+    <iframe
+      id="video-iframe"
+      width="1280"
+      height="720"
+      src=""
+      data-src="https://www.image2url.com/r2/default/videos/1778555557593-2bd87a5c-a1d7-4bdb-92b5-716335b22bee.mp4"
+      frameborder="0"
+      allow="autoplay; encrypted-media"
+      allowfullscreen
+      style="display: block;"
+    ></iframe>
+  </div>
+</div>
 
   <!-- 라이트박스 오버레이 -->
   <div
@@ -338,7 +423,7 @@
     style="
       width: 400px;
       height: 80px;
-      left: 670px;
+      left: 710px;
       top: 3292px;
       position: absolute;
       text-align: center;
@@ -353,7 +438,7 @@
       text-shadow: 4px 4px 4px rgba(0, 0, 0, 0.5);
     "
   >
-    AETHER는?
+    AETHER
   </div>
   <div
     style="
@@ -450,7 +535,7 @@
 ">
   <img
     id="media-main-img"
-    src="https://placehold.co/1360x600"
+    src="https://i.ibb.co/qLfZRVbz/Media1.png"
     style="
       width: 100%;
       height: 100%;
@@ -483,7 +568,7 @@
 
  <div class="media-thumb active-thumb" data-index="0" onclick="selectMedia(0)"
   style="width: 325px; height: 220px; left: 280px; top: 4930px; position: absolute; overflow: hidden; cursor: pointer;">
-  <img src="https://placehold.co/325x220" style="width: 100%; height: 100%; object-fit: cover;" />
+  <img src="https://i.ibb.co/qLfZRVbz/Media1.png" style="width: 100%; height: 100%; object-fit: cover;" />
 </div>
 <div style="left: 280px; top: 5155px; position: absolute; width: 325px; height: 5px; background: rgba(255,255,255,0.2); border-radius: 3px;">
   <div class="media-progress" data-index="0" style="height: 100%; width: 0%; background: white; border-radius: 3px;"></div>
@@ -491,7 +576,7 @@
 
 <div class="media-thumb" data-index="1" onclick="selectMedia(1)"
   style="width: 325px; height: 220px; left: 625px; top: 4930px; position: absolute; overflow: hidden; cursor: pointer;">
-  <img src="https://placehold.co/325x220" style="width: 100%; height: 100%; object-fit: cover;" />
+  <img src="https://i.ibb.co/s9NVJSgD/Media2.png" style="width: 100%; height: 100%; object-fit: cover;" />
 </div>
 <div style="left: 625px; top: 5155px; position: absolute; width: 325px; height: 5px; background: rgba(255,255,255,0.2); border-radius: 3px;">
   <div class="media-progress" data-index="1" style="height: 100%; width: 0%; background: white; border-radius: 3px;"></div>
@@ -499,7 +584,7 @@
 
 <div class="media-thumb" data-index="2" onclick="selectMedia(2)"
   style="width: 325px; height: 220px; left: 970px; top: 4930px; position: absolute; overflow: hidden; cursor: pointer;">
-  <img src="https://placehold.co/325x220" style="width: 100%; height: 100%; object-fit: cover;" />
+  <img src="https://i.ibb.co/vvJztqbX/Media3.png" style="width: 100%; height: 100%; object-fit: cover;" />
 </div>
 <div style="left: 970px; top: 5155px; position: absolute; width: 325px; height: 5px; background: rgba(255,255,255,0.2); border-radius: 3px;">
   <div class="media-progress" data-index="2" style="height: 100%; width: 0%; background: white; border-radius: 3px;"></div>
@@ -507,7 +592,7 @@
 
 <div class="media-thumb" data-index="3" onclick="selectMedia(3)"
   style="width: 325px; height: 220px; left: 1315px; top: 4930px; position: absolute; overflow: hidden; cursor: pointer;">
-  <img src="https://placehold.co/325x220" style="width: 100%; height: 100%; object-fit: cover;" />
+  <img src="https://i.ibb.co/x8YjMDz1/Media4.png" style="width: 100%; height: 100%; object-fit: cover;" />
 </div>
 <div style="left: 1315px; top: 5155px; position: absolute; width: 325px; height: 5px; background: rgba(255,255,255,0.2); border-radius: 3px;">
   <div class="media-progress" data-index="3" style="height: 100%; width: 0%; background: white; border-radius: 3px;"></div>

@@ -268,3 +268,31 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("play-icon").style.opacity = "1";
   });
 });
+
+// ===== 비디오 팝업 =====
+function openVideoPopup() {
+  var popup = document.getElementById("video-popup");
+  var iframe = document.getElementById("video-iframe");
+
+  // src 설정 (autoplay 포함)
+  iframe.src = iframe.getAttribute("data-src");
+
+  popup.style.display = "flex";
+  document.body.style.overflow = "hidden"; // 배경 스크롤 방지
+}
+
+function closeVideoPopup(e) {
+  var popup = document.getElementById("video-popup");
+  var iframe = document.getElementById("video-iframe");
+
+  // iframe src 초기화 (영상 정지)
+  iframe.src = "";
+
+  popup.style.display = "none";
+  document.body.style.overflow = "";
+}
+
+// ESC 키로 닫기
+window.addEventListener("keydown", function (e) {
+  if (e.key === "Escape") closeVideoPopup();
+});
