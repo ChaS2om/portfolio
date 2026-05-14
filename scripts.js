@@ -91,19 +91,50 @@ window.onload = function () {
   var slideTimer = null;
 
   function goTo(i) {
+    var prevIndex = index;
     index = i;
 
-    var thumbImg = document.querySelector(
-      ".media-thumb[data-index='" + index + "'] img",
-    );
     var mainImg = document.getElementById("media-main-img");
-    mainImg.src = thumbImg.src;
+    var container = mainImg.parentElement;
+    var goingForward = i > prevIndex || (prevIndex === 3 && i === 0);
 
+    // 새 이미지 생성
+    var newImg = document.createElement("img");
+    var thumb = document.querySelector(
+      ".media-thumb[data-index='" + index + "']",
+    );
+    newImg.src =
+      thumb.getAttribute("data-full-src") ||
+      document.querySelector(".media-thumb[data-index='" + index + "'] img")
+        .src;
+    newImg.style.cssText =
+      "width:100%; height:100%; object-fit:cover; position:absolute; top:0; left:0;";
+
+    // 방향에 따라 애니메이션
+    if (goingForward) {
+      newImg.style.animation = "slideInFromRight 0.5s ease forwards";
+      mainImg.style.animation = "slideOutToLeft 0.5s ease forwards";
+    } else {
+      newImg.style.animation = "slideInFromLeft 0.5s ease forwards";
+      mainImg.style.animation = "slideOutToRight 0.5s ease forwards";
+    }
+
+    container.appendChild(newImg);
+
+    // 애니메이션 끝난 후 정리
+    setTimeout(function () {
+      mainImg.remove();
+      newImg.id = "media-main-img";
+      newImg.style.animation = "";
+    }, 500);
+
+    // 썸네일 활성화
     var thumbs = document.querySelectorAll(".media-thumb");
     for (var t = 0; t < thumbs.length; t++) {
       thumbs[t].classList.toggle("active-thumb", t === index);
     }
 
+    // 프로그레스 바 초기화
     var bars = document.querySelectorAll(".media-progress");
     for (var b = 0; b < bars.length; b++) {
       bars[b].style.transition = "none";
@@ -127,134 +158,6 @@ window.onload = function () {
   window.selectMedia = goTo;
   goTo(0);
 };
-
-// ===== 섹션 스냅 스크롤 =====
-var sectionBounds = [0, 1260, 2680, 4120, 5200];
-var snapBusy = false;
-var prevScrollY = 0;
-var trackedIdx = 0;
-var touchStartY = 0;
-
-function getSectionIdx(y) {
-  for (var i = sectionBounds.length - 1; i >= 0; i--) {
-    if (y >= sectionBounds[i]) return i;
-  }
-  return 0;
-}
-
-function getSectionHeight(idx) {
-  if (idx < sectionBounds.length - 1) {
-    return sectionBounds[idx + 1] - sectionBounds[idx];
-  }
-  return document.body.scrollHeight - sectionBounds[idx];
-}
-
-function snapUpTarget(idx) {
-  var vh = window.innerHeight;
-  var sectionStart = sectionBounds[idx];
-  var sectionH = getSectionHeight(idx);
-  var target = sectionStart + sectionH - vh;
-  return Math.max(sectionStart, target);
-}
-
-function doSnap(targetY) {
-  snapBusy = true;
-  window.scrollTo({ top: targetY, behavior: "smooth" });
-  setTimeout(function () {
-    snapBusy = false;
-    prevScrollY = window.scrollY;
-    trackedIdx = getSectionIdx(window.scrollY);
-  }, 1000);
-}
-
-window.addEventListener(
-  "scroll",
-  function () {
-    if (snapBusy) return;
-
-    var y = window.scrollY;
-    var vh = window.innerHeight;
-    var goingDown = y > prevScrollY;
-    prevScrollY = y;
-
-    var naturalIdx = getSectionIdx(y);
-
-    if (goingDown) {
-      if (
-        naturalIdx < sectionBounds.length - 1 &&
-        y + vh >= sectionBounds[naturalIdx + 1] - 30
-      ) {
-        trackedIdx = naturalIdx + 1;
-        doSnap(sectionBounds[trackedIdx]);
-      } else {
-        trackedIdx = naturalIdx;
-      }
-    } else {
-      if (naturalIdx < trackedIdx && trackedIdx > 0) {
-        trackedIdx = trackedIdx - 1;
-        doSnap(snapUpTarget(trackedIdx));
-      } else {
-        trackedIdx = naturalIdx;
-      }
-    }
-  },
-  { passive: true },
-);
-
-window.addEventListener(
-  "wheel",
-  function (e) {
-    if (snapBusy || e.deltaY >= 0) return;
-    var y = window.scrollY;
-    var idx = getSectionIdx(y);
-    if (idx > 0 && y <= sectionBounds[idx] + 80) {
-      e.preventDefault();
-      trackedIdx = idx - 1;
-      doSnap(snapUpTarget(trackedIdx));
-    }
-  },
-  { passive: false },
-);
-
-window.addEventListener(
-  "touchstart",
-  function (e) {
-    touchStartY = e.touches[0].clientY;
-  },
-  { passive: true },
-);
-
-window.addEventListener(
-  "touchend",
-  function (e) {
-    if (snapBusy) return;
-    var diff = touchStartY - e.changedTouches[0].clientY;
-    var y = window.scrollY;
-    var idx = getSectionIdx(y);
-
-    if (diff < -50 && idx > 0 && y <= sectionBounds[idx] + 80) {
-      trackedIdx = idx - 1;
-      doSnap(snapUpTarget(trackedIdx));
-    }
-  },
-  { passive: true },
-);
-
-function toggleHeroVideo() {
-  var video = document.getElementById("hero-video");
-  var btn = document.getElementById("play-btn");
-  var icon = document.getElementById("play-icon");
-
-  if (video.paused) {
-    video.play();
-    btn.style.opacity = "0";
-    icon.style.opacity = "0";
-  } else {
-    video.pause();
-    btn.style.opacity = "0.7";
-    icon.style.opacity = "1";
-  }
-}
 
 // 비디오 끝나면 처음으로 되감고 버튼 다시 표시
 document.addEventListener("DOMContentLoaded", function () {
