@@ -44,9 +44,23 @@ window.onload = function () {
   var isAnimating = false; // 애니메이션 중 중복 방지
 
   function goTo(i, skipAnimation) {
-    // 같은 슬라이드이거나 애니메이션 중이면 무시
     if (i === index && !skipAnimation) return;
-    if (isAnimating) return;
+
+    // 애니메이션 중이어도 타이머는 항상 취소
+    clearTimeout(slideTimer);
+
+    // 애니메이션 중 클릭 시: 진행 중인 애니메이션 즉시 정리
+    if (isAnimating) {
+      var oldNew = document.getElementById("media-main-img");
+      var imgs = oldNew.parentElement.querySelectorAll("img");
+      // 첫 번째 img만 남기고 나머지 제거
+      for (var k = 1; k < imgs.length; k++) {
+        imgs[k].remove();
+      }
+      imgs[0].id = "media-main-img";
+      imgs[0].style.animation = "";
+      isAnimating = false;
+    }
 
     var prevIndex = index;
     index = i;
@@ -55,18 +69,24 @@ window.onload = function () {
     var container = mainImg.parentElement;
 
     if (skipAnimation) {
-      // 초기 로딩: 애니메이션 없이 바로 표시
       mainImg.src = document.querySelector(
         ".media-thumb[data-index='0'] img",
       ).src;
     } else {
       isAnimating = true;
-      var goingForward =
-        i > prevIndex ||
-        (prevIndex === document.querySelectorAll(".media-thumb").length - 1 &&
-          i === 0);
 
-      // 새 이미지 생성
+      // i < prevIndex면 뒤로, 아니면 앞으로
+      // 단, 순환(마지막→첫번째)은 앞으로, 첫번째→마지막은 뒤로
+      var totalThumbs = document.querySelectorAll(".media-thumb").length;
+      var goingForward;
+      if (prevIndex === totalThumbs - 1 && i === 0) {
+        goingForward = true;
+      } else if (prevIndex === 0 && i === totalThumbs - 1) {
+        goingForward = false;
+      } else {
+        goingForward = i > prevIndex;
+      }
+
       var newImg = document.createElement("img");
       var thumb = document.querySelector(
         ".media-thumb[data-index='" + index + "']",
@@ -102,7 +122,7 @@ window.onload = function () {
       thumbs[t].classList.toggle("active-thumb", t === index);
     }
 
-    // 프로그레스 바 초기화
+    // 프로그레스 바
     var bars = document.querySelectorAll(".media-progress");
     for (var b = 0; b < bars.length; b++) {
       bars[b].style.transition = "none";
@@ -117,7 +137,6 @@ window.onload = function () {
       activeBar.style.width = "100%";
     }, 30);
 
-    clearTimeout(slideTimer);
     slideTimer = setTimeout(function () {
       goTo((index + 1) % document.querySelectorAll(".media-thumb").length);
     }, INTERVAL);
